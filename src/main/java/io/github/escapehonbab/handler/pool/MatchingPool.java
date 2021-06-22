@@ -14,10 +14,20 @@ public class MatchingPool {
     private List<MatchingUserWrapper> userQueue;
     private UserScoreCalculator userScoreCalculator;
 
-    public MatchingPool(){
+    private static MatchingPool instance;
+
+    private MatchingPool(){
         this.userQueue = new ArrayList<>();
-        this.userScoreCalculator = new UserScoreCalculator();
+        this.userScoreCalculator = UserScoreCalculator.getInstance();
     }
+
+    public static MatchingPool getInstance(){
+        if(instance == null)
+            return (instance = new MatchingPool());
+
+        return instance;
+    }
+
     public void addQueue(MatchingUserWrapper user){
         MatchingTask task = new MatchingTask(user,new ArrayList<>(userQueue),userScoreCalculator);
         task.start();
@@ -48,8 +58,8 @@ public class MatchingPool {
                 }
             }
             MatchingUserWrapper matched = userQueue.get(bestUserIndex);
-            user.getCallback().onMatched(matched.getUser());
-            matched.getCallback().onMatched(user.getUser());
+            user.getCallback().onMatched(user, matched.getUser());
+            matched.getCallback().onMatched(matched, user.getUser());
         }
     }
 }

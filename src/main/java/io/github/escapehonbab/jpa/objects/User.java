@@ -1,6 +1,7 @@
 package io.github.escapehonbab.jpa.objects;
 
 import io.ebean.annotation.DbArray;
+import io.github.escapehonbab.jpa.model.BaseModel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +15,7 @@ import java.util.List;
 
 /**
  * @author Singlerr
- * @see io.github.escapehonbab.jpa.objects.BaseModel
+ * @see BaseModel
  * This is a object that contains base information of a user.
  */
 
@@ -23,11 +24,11 @@ import java.util.List;
 @Getter
 @Table(name = "users")
 @Entity
-public class User extends BaseModel{
+public class User extends BaseModel {
     /**
      * A user id
      */
-    private String id;
+    private String userId;
     /**
      * A real name of a user, not a nick name.
      */
@@ -45,6 +46,7 @@ public class User extends BaseModel{
 
     /**
      * A sex of a user. It can be parsed as enum.
+     *
      * @see Sex
      */
     private String sex;
@@ -78,7 +80,7 @@ public class User extends BaseModel{
     private GPSData gpsData;
 
 
-    public Sex getSexType(){
+    public Sex getSexType() {
         return Sex.valueOf(getSex());
     }
 }

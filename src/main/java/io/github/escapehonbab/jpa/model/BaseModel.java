@@ -1,4 +1,4 @@
-package io.github.escapehonbab.jpa.objects;
+package io.github.escapehonbab.jpa.model;
 
 import io.ebean.Model;
 import lombok.Getter;

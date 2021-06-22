@@ -4,5 +4,5 @@ import io.github.escapehonbab.jpa.objects.User;
 
 public interface MatchingHandlerCallback {
 
-    void onMatched(User target);
+    void onMatched(MatchingUserWrapper wrapper, User target);
 }

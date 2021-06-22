@@ -18,14 +18,23 @@ public class MatchingServerBootstrap {
     private final int port;
     private final String host;
 
-    public MatchingServerBootstrap(String host, int port) {
+    private static MatchingServerBootstrap instance;
+
+    private MatchingServerBootstrap(String host, int port) {
         this.port = port;
         this.host = host;
     }
 
+    public static MatchingServerBootstrap getInstance(String host, int port){
+        if(instance == null)
+            return (instance = new MatchingServerBootstrap(host,port));
+
+        return instance;
+    }
+
     public void startServer() {
         MatchingServerHandler handler = new MatchingServerHandler();
-        EventLoopGroup parentGroup = new NioEventLoopGroup(1);
+        EventLoopGroup parentGroup = new NioEventLoopGroup(3);
         EventLoopGroup childGroup = new NioEventLoopGroup();
 
         try {
