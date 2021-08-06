@@ -1,8 +1,6 @@
 package io.github.escapehonbab.jpa.objects;
 
-import io.ebean.annotation.DbArray;
 import io.github.escapehonbab.jpa.model.BaseModel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +17,7 @@ import java.util.List;
  * This is a object that contains base information of a user.
  */
 
-@Builder
+
 @Setter
 @Getter
 @Table(name = "users")
@@ -28,57 +26,74 @@ public class User extends BaseModel {
     /**
      * A user id
      */
-    private String userId;
+    public String userId;
+    /**
+     * A user password
+     */
+    public String password;
     /**
      * A real name of a user, not a nick name.
      */
-    private String name;
-
+    public String name;
     /**
      * A nick name of a user.
      */
-    private String nickName;
+    public String nickName;
+    /**
+     * A set of friends.
+     */
 
+    public List<String> friends;
     /**
      * A birth day of a user.
      */
-    private Date birthDay;
-
+    public Date birthDay;
     /**
      * A sex of a user. It can be parsed as enum.
      *
      * @see Sex
      */
-    private String sex;
-
+    public String sex;
     /**
      * A image of a profile of user.
      * It is saved with type "Blob"
      */
     @Lob
-    private byte[] image;
-
+    public byte[] image;
     /**
      * A set of interests that a user has.
      * All interests are transformed from Korean to English in app.
      **/
-    @DbArray
-    private List<String> interests;
 
+    public String interests;
     /**
      * A form of this is not set.
      * TODO("Set a form of phone number")
      */
-    private String phoneNumber;
-
+    public String phoneNumber;
     /**
      * It is not saved to a database.
      * It is basically null when an instance of user is created.
      * You should set gps data manually to a gps data from rest api.
      */
     @Transient
-    private GPSData gpsData;
-
+    public GPSData gpsData;
+    /**
+     * It is not saved to a database.
+     * It is basically null when an instance of user is created.
+     * It contains result message from server when register/login operation occurred.
+     */
+    @Transient
+    public String result;
+    /**
+     * It is not saved to a database.
+     * It is basically null when an instance of user is created.
+     * It contains responseCode from server when register/login operation occurred.
+     */
+    @Transient
+    public int responseCode;
+    public User() {
+    }
 
     public Sex getSexType() {
         return Sex.valueOf(getSex());

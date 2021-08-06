@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @MappedSuperclass
-public class BaseModel extends Model{
+public class BaseModel extends Model {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

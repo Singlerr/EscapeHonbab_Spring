@@ -9,15 +9,12 @@ import io.github.escapehonbab.jpa.DatabaseHandler;
 import io.github.escapehonbab.jpa.objects.GPSData;
 import io.github.escapehonbab.jpa.objects.User;
 import io.github.escapehonbab.lang.StaticMessage;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
-import java.nio.charset.Charset;
-
 @ChannelHandler.Sharable
-public class MatchingServerHandler extends ChannelInboundHandlerAdapter{
+public class MatchingServerHandler extends ChannelInboundHandlerAdapter {
 
 
     @Override
@@ -26,13 +23,13 @@ public class MatchingServerHandler extends ChannelInboundHandlerAdapter{
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if(! (msg instanceof GPSData)){
+        if (!(msg instanceof GPSData)) {
             ctx.writeAndFlush(ResponseBundle.builder().response(StaticMessage.UNSUPPORTED_DATA_TYPE).responseCode(400));
             return;
         }
         GPSData data = (GPSData) msg;
-        User user = DatabaseHandler.getInstance().getDatabase().find(User.class).where().eq("id",data.getId()).findOne();
-        if(user != null){
+        User user = DatabaseHandler.getInstance().getDatabase().find(User.class).where().eq("id", data.getId()).findOne();
+        if (user != null) {
             user.setGpsData(data);
             MatchingUserWrapper wrapper = MatchingUserWrapper.getInstance(user, new MatchingHandlerCallback() {
                 @Override
@@ -42,7 +39,7 @@ public class MatchingServerHandler extends ChannelInboundHandlerAdapter{
                 }
             });
             MatchingHandler.getInstance().submit(wrapper);
-        }else{
+        } else {
             ctx.writeAndFlush(ResponseBundle.builder().response(StaticMessage.ERROR_NO_USER_FOUND).responseCode(400).build());
         }
     }
