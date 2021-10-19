@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class EscapeHonbabApplication {
 
-    private static final String HOST = "localhost";
+    private static final String HOST = "127.0.0.1";
     private static final int PORT = 1300;
 
     public static void main(String[] args) {

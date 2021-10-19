@@ -21,7 +21,6 @@ public class ChattingServerHandler extends ChannelInboundHandlerAdapter {
             MessageBundle bundle = (MessageBundle) msg;
             Database database = DatabaseHandler.getInstance().getDatabase();
             if (database.find(User.class).where().eq("userId", bundle.getTargetUserId()).exists()) {
-
             } else {
                 bundle.setState(StaticMessage.ERROR_NO_USER_FOUND);
                 ctx.writeAndFlush(bundle);

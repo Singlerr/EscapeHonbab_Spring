@@ -1,12 +1,14 @@
 package io.github.escapehonbab.controller.service;
 
 import io.github.escapehonbab.lang.StaticMessage;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+@Service
 public class VerificationService {
     private static final HashMap<String, String> unverifiedPhoneNumbers = new HashMap<>();
 

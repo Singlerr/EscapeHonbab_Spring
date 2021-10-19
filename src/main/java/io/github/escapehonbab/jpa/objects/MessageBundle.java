@@ -1,8 +1,10 @@
 package io.github.escapehonbab.jpa.objects;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Getter;
 import lombok.Setter;
 
+@JsonTypeInfo(include = JsonTypeInfo.As.EXTERNAL_PROPERTY, use = JsonTypeInfo.Id.NAME)
 @Getter
 public class MessageBundle {
     @Setter

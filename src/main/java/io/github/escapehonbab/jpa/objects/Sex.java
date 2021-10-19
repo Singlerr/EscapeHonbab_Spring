@@ -1,6 +1,8 @@
 package io.github.escapehonbab.jpa.objects;
 
-public enum Sex {
+import java.io.Serializable;
+
+public enum Sex implements Serializable {
     MALE,
     FEMALE
 }

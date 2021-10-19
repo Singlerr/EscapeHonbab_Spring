@@ -1,5 +1,6 @@
 package io.github.escapehonbab.jpa.objects;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.github.escapehonbab.jpa.model.BaseModel;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.sql.Date;
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -17,12 +19,12 @@ import java.util.List;
  * This is a object that contains base information of a user.
  */
 
-
+@JsonTypeInfo(include = JsonTypeInfo.As.EXTERNAL_PROPERTY, use = JsonTypeInfo.Id.NAME)
 @Setter
 @Getter
 @Table(name = "users")
 @Entity
-public class User extends BaseModel {
+public class User extends BaseModel implements Serializable {
     /**
      * A user id
      */
@@ -39,15 +41,19 @@ public class User extends BaseModel {
      * A nick name of a user.
      */
     public String nickName;
+
+    /**
+     * An age of a user
+     */
+    public int age;
     /**
      * A set of friends.
      */
-
     public List<String> friends;
     /**
      * A birth day of a user.
      */
-    public Date birthDay;
+    public LocalDate birthDay;
     /**
      * A sex of a user. It can be parsed as enum.
      *
@@ -74,13 +80,6 @@ public class User extends BaseModel {
     /**
      * It is not saved to a database.
      * It is basically null when an instance of user is created.
-     * You should set gps data manually to a gps data from rest api.
-     */
-    @Transient
-    public GPSData gpsData;
-    /**
-     * It is not saved to a database.
-     * It is basically null when an instance of user is created.
      * It contains result message from server when register/login operation occurred.
      */
     @Transient
@@ -92,6 +91,7 @@ public class User extends BaseModel {
      */
     @Transient
     public int responseCode;
+
     public User() {
     }
 
