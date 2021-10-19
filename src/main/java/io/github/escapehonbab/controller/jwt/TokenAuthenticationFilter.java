@@ -24,6 +24,11 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private AuthenticationTokenProvider authenticationTokenProvider;
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        return request.getRequestURI().equals("/api/v1/user/register") || request.getRequestURI().equals("/api/v1/user/login");
+    }
+
+    @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String token = authenticationTokenProvider.parseTokenString(httpServletRequest);
         if (authenticationTokenProvider.validateToken(token)) {
@@ -43,6 +48,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 throw new UnauthorizedException("No user found for " + userNo);
             }
             filterChain.doFilter(httpServletRequest, httpServletResponse);
+        }else{
+            throw new UnauthorizedException("No token found");
         }
     }
 }

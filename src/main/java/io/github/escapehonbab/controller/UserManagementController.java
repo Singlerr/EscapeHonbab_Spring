@@ -30,7 +30,6 @@ public class UserManagementController{
     @Async
     @PostMapping(value = "/register")
     public ResponseBundle registerUser(@RequestBody User user) {
-        System.out.println("ddd");
         DatabaseHandler handler = DatabaseHandler.getInstance();
         int responseCode = 0;
         String result = null;

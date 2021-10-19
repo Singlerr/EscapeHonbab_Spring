@@ -18,7 +18,6 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class BodyConverter extends AbstractHttpMessageConverter<Object> {
 
-
     private static final Charset DEFAULT = StandardCharsets.UTF_8;
     @JacksonInject
     private final ObjectMapper objectMapper = new ObjectMapper();

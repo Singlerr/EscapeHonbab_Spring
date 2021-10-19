@@ -23,9 +23,9 @@ import java.sql.Statement;
 public class DatabaseHandler {
 
     private static DatabaseHandler instance;
-    private final String USERNAME = "username";
-    private final String PASSWORD = "password";
-    private final String URL = "url";
+    private final String USERNAME = "root";
+    private final String PASSWORD = "1234";
+    private final String URL = "jdbc:mariadb://localhost:3306/test?useLegacyDatetimeCode=false";
     @Getter
     private Database database;
 

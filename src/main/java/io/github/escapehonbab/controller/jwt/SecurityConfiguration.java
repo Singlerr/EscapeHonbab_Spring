@@ -11,26 +11,22 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/api/v1/user/register","/api/v1/user/login");
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .formLogin().disable()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests()
-                .antMatchers("/api/v1/user/register","/api/v1/user/login")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
+                    .authorizeRequests()
+                        .antMatchers("/api/v1/user/register","/api/v1/user/login")
+                            .permitAll()
+                        .anyRequest()
+                            .authenticated()
                 .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(new AuthenticationEntryPoint());
+                    .exceptionHandling()
+                        .authenticationEntryPoint(new AuthenticationEntryPoint());
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
