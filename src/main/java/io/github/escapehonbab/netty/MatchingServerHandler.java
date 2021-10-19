@@ -1,20 +1,13 @@
 package io.github.escapehonbab.netty;
 
-import io.github.escapehonbab.UserMatchingState;
-import io.github.escapehonbab.controller.objects.ResponseBundle;
-import io.github.escapehonbab.handler.MatchingHandler;
-import io.github.escapehonbab.handler.MatchingUserWrapper;
-import io.github.escapehonbab.jpa.DatabaseHandler;
 import io.github.escapehonbab.jpa.objects.DesiredTarget;
-import io.github.escapehonbab.jpa.objects.User;
 import io.github.escapehonbab.lang.StaticMessage;
+import io.github.escapehonbab.spring.objects.ResponseBundle;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
-
-import java.util.Optional;
 
 @ChannelHandler.Sharable
 public class MatchingServerHandler extends ChannelInboundHandlerAdapter {
@@ -45,17 +38,18 @@ public class MatchingServerHandler extends ChannelInboundHandlerAdapter {
             return;
         }
         DesiredTarget target = (DesiredTarget) o;
-
-        Optional<User> opt = DatabaseHandler.getInstance().getDatabase().find(User.class).where().eq("id", target.getUser().getUserId()).findOneOrEmpty();
-        if (!opt.isEmpty()) {
-            MatchingUserWrapper wrapper = MatchingUserWrapper.getInstance(target, (userWrapper, target1) -> {
-                userWrapper.setState(UserMatchingState.MATCHED);
-                ctx.writeAndFlush(target1);
-            });
-            MatchingHandler.getInstance().submit(wrapper);
-        } else {
-            ctx.writeAndFlush(ResponseBundle.builder().response(StaticMessage.ERROR_NO_USER_FOUND).responseCode(400).build());
-        }
+        /**
+         Optional<User> opt = DatabaseHandler.getInstance().getDatabase().find(User.class).where().eq("id", target.getUser().getUserId()).findOneOrEmpty();
+         if (!opt.isEmpty()) {
+         MatchingUserWrapper wrapper = MatchingUserWrapper.getInstance(target, (userWrapper, target1) -> {
+         userWrapper.setState(UserMatchingState.MATCHED);
+         ctx.writeAndFlush(target1);
+         });
+         MatchingHandler.getInstance().submit(wrapper);
+         } else {
+         ctx.writeAndFlush(ResponseBundle.builder().response(StaticMessage.ERROR_NO_USER_FOUND).responseCode(400).build());
+         }
+         **/
     }
 
     @Override

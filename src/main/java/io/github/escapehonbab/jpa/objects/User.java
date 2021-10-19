@@ -5,10 +5,7 @@ import io.github.escapehonbab.jpa.model.BaseModel;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
@@ -49,6 +46,7 @@ public class User extends BaseModel implements Serializable {
     /**
      * A set of friends.
      */
+    @ElementCollection
     public List<String> friends;
     /**
      * A birth day of a user.

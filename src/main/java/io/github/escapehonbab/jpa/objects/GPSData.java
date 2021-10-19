@@ -22,6 +22,7 @@ public class GPSData implements Serializable {
      * The id of the owner of this gps data.
      */
     private String id;
+
     public GPSData() {
     }
 
