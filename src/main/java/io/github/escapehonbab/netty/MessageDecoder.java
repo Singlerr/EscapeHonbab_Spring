@@ -27,7 +27,6 @@ public class MessageDecoder extends ByteToMessageDecoder {
             if (cls.getSimpleName().equalsIgnoreCase(clsName)) {
                 Object o = ObjectSerializer.getMapper().readValue(read, cls);
                 list.add(o);
-                break;
             }
         }
     }

@@ -7,6 +7,7 @@ public class StaticMessage {
     public static final String ERROR_NO_USER_FOUND = "ERROR_NO_USER_FOUND";
     public static final String UNSUPPORTED_DATA_TYPE = "UNSUPPORTED_DATA_TYPE";
     public static final String ERROR_LOGIN_FAILED = "ERROR_LOGIN_FAILED";
+    public static final String ERROR_TOKEN_VALIDATION_FAILED = "ERROR_TOKEN_VALIDATION_FAILED";
     public static final int RESP_SUCCESS = 200;
     public static final int RESP_FAILED = 400;
 

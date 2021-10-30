@@ -1,6 +1,7 @@
 package io.github.escapehonbab.netty.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import java.io.*;
 
 public class ObjectSerializer {
     @Getter
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     public static ByteBuf writeAsByteBuf(Object object) throws Exception {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();

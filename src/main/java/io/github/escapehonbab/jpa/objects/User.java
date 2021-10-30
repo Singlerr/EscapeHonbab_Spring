@@ -43,6 +43,10 @@ public class User extends BaseModel implements Serializable {
      * An age of a user
      */
     public int age;
+
+    @ElementCollection
+    public List<String> blackList;
+
     /**
      * A set of friends.
      */
@@ -96,4 +100,6 @@ public class User extends BaseModel implements Serializable {
     public Sex getSexType() {
         return Sex.valueOf(getSex());
     }
+
+    
 }

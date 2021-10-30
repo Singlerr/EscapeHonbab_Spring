@@ -2,6 +2,8 @@ package io.github.escapehonbab.spring.cipher;
 
 import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
@@ -19,8 +21,8 @@ import java.nio.charset.StandardCharsets;
 public class BodyConverter extends AbstractHttpMessageConverter<Object> {
 
     private static final Charset DEFAULT = StandardCharsets.UTF_8;
-    @JacksonInject
-    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     public BodyConverter() {
         super(MediaType.APPLICATION_JSON, new MediaType("application", "*+json", DEFAULT));
@@ -33,7 +35,7 @@ public class BodyConverter extends AbstractHttpMessageConverter<Object> {
 
     @Override
     protected Object readInternal(Class<?> aClass, HttpInputMessage httpInputMessage) throws IOException, HttpMessageNotReadableException {
-        return objectMapper.readValue(decrypt(httpInputMessage.getBody()), aClass);
+        return objectMapper.readValue(decrypt(httpInputMessage.getBody()),aClass);
     }
 
     @Override

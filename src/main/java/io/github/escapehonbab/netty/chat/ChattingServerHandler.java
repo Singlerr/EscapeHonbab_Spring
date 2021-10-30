@@ -3,16 +3,23 @@ package io.github.escapehonbab.netty.chat;
 
 import io.github.escapehonbab.jpa.objects.MessageBundle;
 import io.github.escapehonbab.spring.service.UserService;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-@RestController
+@Component
 public class ChattingServerHandler extends ChannelInboundHandlerAdapter {
 
-    @Autowired
     private UserService service;
+
+    private ChattingPool pool;
+
+    public ChattingServerHandler(UserService service, ChattingPool pool){
+        this.service = service;
+        this.pool = pool;
+    }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -23,6 +30,16 @@ public class ChattingServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof MessageBundle) {
             MessageBundle bundle = (MessageBundle) msg;
+            if (bundle.getState().equals("RECEIVE")) {
+                ctx.writeAndFlush(bundle);
+            } else if (bundle.getState().equals("SEND")) {
+                assert bundle.getTargetUserId() != null;
+                if (pool.isInConnection(bundle.getTargetUserId())) {
+                    Channel target = pool.getConnection(bundle.getTargetUserId());
+                    bundle.setState("RECEIVE");
+                    target.writeAndFlush(bundle);
+                }
+            }
         }
     }
 }

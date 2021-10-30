@@ -27,7 +27,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return request.getRequestURI().equals("/api/v1/user/register") || request.getRequestURI().equals("/api/v1/user/login");
+        return request.getRequestURI().equals("/api/v1/user/register") || request.getRequestURI().equals("/api/v1/user/login")
+                || request.getRequestURI().equals("/api/v1/auth/verify") || request.getRequestURI().equals("/api/v1/auth/msg");
     }
 
     @Override

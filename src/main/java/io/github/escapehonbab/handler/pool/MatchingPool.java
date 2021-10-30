@@ -47,6 +47,10 @@ public class MatchingPool {
         public void run() {
             int bestUserIndex = 0;
             double bestScore = 0;
+
+            if(userQueue.size() == 0)
+                return;
+
             for (int i = 0; i < userQueue.size(); i++) {
                 //TODO("하한값을 두어 최소 상대방이 갖추어야 할 조건을 설정해야함. 하한값을 두지 않을 경우, 거리가 엄청 먼데도 상대로 잡히는 경우가 존재")
                 calculator.setTargetUser(userQueue.get(i).getUser());

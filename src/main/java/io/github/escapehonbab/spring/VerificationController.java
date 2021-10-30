@@ -1,7 +1,9 @@
 package io.github.escapehonbab.spring;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.escapehonbab.jpa.objects.User;
 import io.github.escapehonbab.lang.StaticMessage;
+import io.github.escapehonbab.spring.objects.RequestBundle;
 import io.github.escapehonbab.spring.objects.ResponseBundle;
 import io.github.escapehonbab.spring.objects.VerificationBundle;
 import io.github.escapehonbab.spring.service.VerificationService;
@@ -9,6 +11,8 @@ import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -17,31 +21,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.HashMap;
 
-@PropertySource("classpath:conf.properties")
+
+
 @EnableAsync
 @RestController
 @RequestMapping("/api/v1/auth")
 public class VerificationController {
-    @Value("${sns.api_secret")
+
+    @Value("${sns.api_secret}")
     private String apiSecret;
 
-    @Value("${sns.api_key")
+    @Value("${sns.api_key}")
     private String apiKey;
 
-    @Value("${sns.phone_number")
+    @Value("${sns.phone_number}")
     private String phoneNumber;
 
-    @Async
     @PostMapping(value = "/msg")
-    public ResponseBundle sendVerificationMessage(@RequestBody User user) {
+    public ResponseBundle sendVerificationMessage(@RequestBody RequestBundle bundle) throws IOException {
         Message msg = new Message(apiKey, apiSecret);
         HashMap<String, String> params = new HashMap<>();
-        params.put("to", user.getPhoneNumber());
+        params.put("to", bundle.getMessage(User.class).getPhoneNumber());
         params.put("from", phoneNumber);
         params.put("type", "SMS");
-        params.put("text", String.format("인증 코드는 [%s]입니다.", VerificationService.addNewVerification(user.getPhoneNumber())));
+        params.put("text", String.format("인증 코드는 [%s]입니다.", VerificationService.addNewVerification(bundle.getMessage(User.class).getPhoneNumber())));
         params.put("app_version", "eh 1.0");
         int responseCode;
         String response;
@@ -58,6 +64,7 @@ public class VerificationController {
             responseCode = StaticMessage.RESP_FAILED;
             response = ex.getMessage().toUpperCase();
         }
+
         return ResponseBundle.builder().response(response).responseCode(responseCode).build();
     }
 
