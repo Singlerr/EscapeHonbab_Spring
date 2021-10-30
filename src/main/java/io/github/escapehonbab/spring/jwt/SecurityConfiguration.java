@@ -1,11 +1,6 @@
 package io.github.escapehonbab.spring.jwt;
 
-import io.github.escapehonbab.netty.MatchingServerHandler;
-import io.github.escapehonbab.netty.chat.ChattingPool;
-import io.github.escapehonbab.netty.chat.ChattingServerHandler;
 import io.github.escapehonbab.spring.jwt.errors.AuthenticationEntryPoint;
-import io.github.escapehonbab.spring.service.UserService;
-import io.netty.channel.group.ChannelGroup;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,7 +21,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/v1/user/register", "/api/v1/user/login","/api/v1/auth/verify","/api/v1/auth/msg")
+                .antMatchers("/api/v1/user/register", "/api/v1/user/login", "/api/v1/auth/verify", "/api/v1/auth/msg")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

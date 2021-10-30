@@ -16,7 +16,6 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.GlobalEventExecutor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -32,13 +31,13 @@ public class ChattingServerBootstrap {
     @Value("${server.host}")
     private String host;
 
-    private ChattingServerHandler handler;
+    private final ChattingServerHandler handler;
 
-    private ChattingPool pool;
+    private final ChattingPool pool;
 
-    private DeadConnectionHandler connectionHandler;
+    private final DeadConnectionHandler connectionHandler;
 
-    public ChattingServerBootstrap(ChattingServerHandler handler,ChattingPool pool,DeadConnectionHandler deadConnectionHandler){
+    public ChattingServerBootstrap(ChattingServerHandler handler, ChattingPool pool, DeadConnectionHandler deadConnectionHandler) {
         this.handler = handler;
         this.pool = pool;
         this.connectionHandler = deadConnectionHandler;
@@ -61,7 +60,7 @@ public class ChattingServerBootstrap {
                             @Override
                             protected void initChannel(SocketChannel socketChannel) throws Exception {
                                 socketChannel.pipeline().addLast("idleStateHandler", new IdleStateHandler(60, 30, 0));
-                                socketChannel.pipeline().addLast("deadConnectionHandler",connectionHandler);
+                                socketChannel.pipeline().addLast("deadConnectionHandler", connectionHandler);
                                 socketChannel.pipeline().addLast(new ObjectDecoder(1024 * 1024,
                                                 ClassResolvers.weakCachingConcurrentResolver(getClass().getClassLoader())),
                                         new ObjectEncoder());

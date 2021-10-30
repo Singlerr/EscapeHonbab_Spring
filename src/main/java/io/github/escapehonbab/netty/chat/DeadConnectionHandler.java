@@ -11,9 +11,9 @@ import java.io.Serializable;
 @Component
 public class DeadConnectionHandler extends ChannelDuplexHandler {
 
-    private ChattingPool pool;
+    private final ChattingPool pool;
 
-    public DeadConnectionHandler(ChattingPool pool){
+    public DeadConnectionHandler(ChattingPool pool) {
         this.pool = pool;
     }
 

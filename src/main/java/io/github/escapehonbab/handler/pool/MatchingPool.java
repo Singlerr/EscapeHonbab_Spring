@@ -48,7 +48,7 @@ public class MatchingPool {
             int bestUserIndex = 0;
             double bestScore = 0;
 
-            if(userQueue.size() == 0)
+            if (userQueue.size() == 0)
                 return;
 
             for (int i = 0; i < userQueue.size(); i++) {

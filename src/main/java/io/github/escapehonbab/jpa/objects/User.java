@@ -101,5 +101,5 @@ public class User extends BaseModel implements Serializable {
         return Sex.valueOf(getSex());
     }
 
-    
+
 }

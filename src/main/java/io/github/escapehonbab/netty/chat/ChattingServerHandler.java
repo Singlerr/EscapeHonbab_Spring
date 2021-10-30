@@ -6,17 +6,16 @@ import io.github.escapehonbab.spring.service.UserService;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ChattingServerHandler extends ChannelInboundHandlerAdapter {
 
-    private UserService service;
+    private final UserService service;
 
-    private ChattingPool pool;
+    private final ChattingPool pool;
 
-    public ChattingServerHandler(UserService service, ChattingPool pool){
+    public ChattingServerHandler(UserService service, ChattingPool pool) {
         this.service = service;
         this.pool = pool;
     }

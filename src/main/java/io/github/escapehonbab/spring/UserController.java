@@ -1,9 +1,7 @@
 package io.github.escapehonbab.spring;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.escapehonbab.jpa.objects.User;
 import io.github.escapehonbab.lang.StaticMessage;
-import io.github.escapehonbab.netty.utils.ObjectSerializer;
 import io.github.escapehonbab.spring.jwt.AuthenticationToken;
 import io.github.escapehonbab.spring.jwt.JWTAuthenticationTokenProvider;
 import io.github.escapehonbab.spring.objects.RequestBundle;
@@ -36,7 +34,7 @@ public class UserController {
     public ResponseBundle registerUser(@RequestBody RequestBundle req) throws IOException {
         User user = req.getMessage(User.class);
         user.setPassword(encoder.encode(user.getPassword()));
-        if(service.findByUserId(user.getUserId()).isPresent()){
+        if (service.findByUserId(user.getUserId()).isPresent()) {
             return ResponseBundle.builder().response(StaticMessage.USER_ALREADY_EXISTS).responseCode(HttpStatus.NOT_ACCEPTABLE.value()).build();
         }
         User saved = service.save(user);

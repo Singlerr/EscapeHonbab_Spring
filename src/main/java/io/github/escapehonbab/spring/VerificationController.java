@@ -1,6 +1,5 @@
 package io.github.escapehonbab.spring;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.escapehonbab.jpa.objects.User;
 import io.github.escapehonbab.lang.StaticMessage;
 import io.github.escapehonbab.spring.objects.RequestBundle;
@@ -11,10 +10,6 @@ import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.HashMap;
-
 
 
 @EnableAsync

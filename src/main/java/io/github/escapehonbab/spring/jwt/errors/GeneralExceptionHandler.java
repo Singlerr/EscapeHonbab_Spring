@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GeneralExceptionHandler {
 
     @ExceptionHandler(value = InvalidTypeIdException.class)
-    public ResponseBundle handleJacksonException(){
+    public ResponseBundle handleJacksonException() {
         return ResponseBundle.builder().response("An error occurred").responseCode(HttpStatus.INTERNAL_SERVER_ERROR.value()).build();
     }
+
     @ExceptionHandler(value = NullPointerException.class)
     public ResponseBundle handleNullPointerException() {
         return ResponseBundle.builder().response("An error occurred").responseCode(HttpStatus.INTERNAL_SERVER_ERROR.value()).build();

@@ -1,6 +1,5 @@
 package io.github.escapehonbab.spring.objects;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.escapehonbab.netty.utils.ObjectSerializer;
 import lombok.Builder;

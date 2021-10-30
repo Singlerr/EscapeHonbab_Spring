@@ -15,8 +15,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -25,8 +23,8 @@ import java.util.Optional;
 @Component
 @ChannelHandler.Sharable
 public class MatchingServerHandler extends ChannelInboundHandlerAdapter {
-    private UserService service;
-    private JWTAuthenticationTokenProvider provider;
+    private final UserService service;
+    private final JWTAuthenticationTokenProvider provider;
 
     public MatchingServerHandler(JWTAuthenticationTokenProvider provider, UserService service) {
         this.service = service;
