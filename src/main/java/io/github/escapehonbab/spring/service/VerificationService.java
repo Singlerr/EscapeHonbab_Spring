@@ -39,7 +39,7 @@ public class VerificationService {
                 if (exists(phoneNumber))
                     remove(phoneNumber);
             }
-        }, 110 * 1000);
+        }, 180 * 1000);
         return code;
     }
 

@@ -4,10 +4,12 @@ package io.github.escapehonbab.netty.chat;
 import io.github.escapehonbab.jpa.objects.MessageBundle;
 import io.github.escapehonbab.spring.service.UserService;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.springframework.stereotype.Component;
 
+@ChannelHandler.Sharable
 @Component
 public class ChattingServerHandler extends ChannelInboundHandlerAdapter {
 

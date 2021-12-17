@@ -29,5 +29,6 @@ public class MessageDecoder extends ByteToMessageDecoder {
                 list.add(o);
             }
         }
+        byteBuf.clear();
     }
 }

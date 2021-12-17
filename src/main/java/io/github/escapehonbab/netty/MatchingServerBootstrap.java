@@ -2,6 +2,7 @@ package io.github.escapehonbab.netty;
 
 import io.github.escapehonbab.jpa.objects.DesiredTarget;
 import io.github.escapehonbab.jpa.objects.User;
+import io.github.escapehonbab.spring.objects.ResponseBundle;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -25,13 +26,11 @@ import java.util.Arrays;
 public class MatchingServerBootstrap {
 
 
+    private final MatchingServerHandler handler;
     @Value("${matching.server.port}")
     private int port;
-
     @Value("${server.host}")
     private String host;
-
-    private final MatchingServerHandler handler;
 
     public MatchingServerBootstrap(MatchingServerHandler handler) {
         this.handler = handler;
@@ -53,9 +52,10 @@ public class MatchingServerBootstrap {
                             protected void initChannel(SocketChannel socketChannel) throws Exception {
                                 socketChannel.pipeline().addLast(new IdleStateHandler(60, 30, 0));
                                 socketChannel.pipeline().addLast(
-                                        MessageDecoder.builder().registeredClasses(Arrays.asList(DesiredTarget.class, User.class)).build(),
+                                        MessageDecoder.builder().registeredClasses(Arrays.asList(DesiredTarget.class, User.class, ResponseBundle.class)).build(),
                                         new MessageEncoder(),
                                         handler);
+                                handler.getChannels().add(socketChannel);
                             }
                         });
                 Channel ch = bootstrap.bind(host, port).sync().channel();

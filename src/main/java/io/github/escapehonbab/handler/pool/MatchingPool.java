@@ -2,6 +2,7 @@ package io.github.escapehonbab.handler.pool;
 
 import io.github.escapehonbab.handler.MatchingUserWrapper;
 import io.github.escapehonbab.handler.UserScoreCalculator;
+import lombok.SneakyThrows;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,30 +25,36 @@ public class MatchingPool {
     }
 
     public void addQueue(MatchingUserWrapper user) {
-        MatchingTask task = new MatchingTask(user, new ArrayList<>(userQueue), userScoreCalculator);
+        MatchingTask task = new MatchingTask(user, new ArrayList<>(userQueue), userScoreCalculator, this);
         task.start();
         this.userQueue.add(user);
+    }
+
+    public void removeIfExists(MatchingUserWrapper user) {
+        userQueue.removeIf(e -> e.getUser().getUser().getUserId().equals(user.getUser().getUser().getUserId()));
     }
 
     public class MatchingTask extends Thread {
 
 
-        private final MatchingUserWrapper user;
         private final List<MatchingUserWrapper> userQueue;
+        private final MatchingUserWrapper user;
         private final UserScoreCalculator calculator;
+        private final MatchingPool pool;
 
-        public MatchingTask(MatchingUserWrapper user, List<MatchingUserWrapper> userQueue, UserScoreCalculator calculator) {
+        public MatchingTask(MatchingUserWrapper user, List<MatchingUserWrapper> userQueue, UserScoreCalculator calculator, MatchingPool pool) {
             this.user = user;
             this.userQueue = userQueue;
             this.calculator = calculator;
+            this.pool = pool;
             calculator.setDesiredTarget(user.getUser());
         }
 
+        @SneakyThrows
         @Override
         public void run() {
             int bestUserIndex = 0;
             double bestScore = 0;
-
             if (userQueue.size() == 0)
                 return;
 
@@ -62,6 +69,9 @@ public class MatchingPool {
             MatchingUserWrapper matched = userQueue.get(bestUserIndex);
             user.getCallback().onMatched(user, matched.getUser().getUser());
             matched.getCallback().onMatched(matched, user.getUser().getUser());
+            pool.removeIfExists(user);
+            pool.removeIfExists(matched);
+            interrupt();
         }
     }
 }

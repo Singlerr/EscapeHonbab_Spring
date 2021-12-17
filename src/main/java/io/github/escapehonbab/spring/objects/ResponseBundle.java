@@ -1,11 +1,13 @@
 package io.github.escapehonbab.spring.objects;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.escapehonbab.netty.utils.ObjectSerializer;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+@JsonTypeInfo(include = JsonTypeInfo.As.EXTERNAL_PROPERTY, use = JsonTypeInfo.Id.NAME)
 @Setter
 @Getter
 @Builder

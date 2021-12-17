@@ -71,18 +71,19 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        User user = repository.findUserByUserId(userId).orElseThrow(() -> new UsernameNotFoundException(userId));
+    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
+        User user = repository.findById(Long.parseLong(id)).orElseThrow(() -> new UsernameNotFoundException(id));
         Set<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority(Role.USER.getValue()));
-        if (user.getUserId().equals("singlerr")) {
+        if (user.getUserId().equals("01048728361")) {
             authorities.add(new SimpleGrantedAuthority(Role.ADMIN.getValue()));
         }
         return new org.springframework.security.core.userdetails.User(user.getUserId(), user.getPassword(), authorities);
     }
 
-    public User authenticateByUserIdAndPassword(String userId, String password) {
+    public User authenticateByUserIdAndPassword(String userId, String password) throws BadCredentialsException{
         User user = repository.findUserByUserId(userId).orElseThrow(() -> new UsernameNotFoundException(userId));
+
         if (!encoder.matches(password, user.getPassword())) {
             throw new BadCredentialsException("Password are not matched");
         }

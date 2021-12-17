@@ -5,12 +5,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ChatInfoRepository extends JpaRepository<FriendChatInfo, Long> {
 
-    FriendChatInfo findByOwnerId(Long id);
+    Optional<FriendChatInfo> findFriendChatInfoByOwnerIdAndUserId(String ownerId, String userId);
 
-    List<FriendChatInfo> findFriendChatInfosByOwnerId(Long id);
+
+    List<FriendChatInfo> findFriendChatInfosByOwnerId(String userId);
 
 }

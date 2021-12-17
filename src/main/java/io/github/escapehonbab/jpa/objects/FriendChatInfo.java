@@ -16,10 +16,11 @@ public class FriendChatInfo extends BaseModel implements Serializable {
 
     private byte[] img;
     private String name;
+    private String nickName;
     private String userId;
     private String sex;
     private int age;
     private String time;
-    private Long ownerId;
+    private String ownerId;
 
 }

@@ -5,6 +5,8 @@ import io.github.escapehonbab.spring.repo.ChatInfoRepository;
 import lombok.Builder;
 import org.springframework.stereotype.Service;
 
+import java.util.AbstractMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,8 +24,32 @@ public class ChatInfoService {
         return repository.findById(id);
     }
 
-    public List<FriendChatInfo> findAllByOwnerId(Long ownerId) {
+    public List<FriendChatInfo> findAllByOwnerId(String ownerId) {
         return repository.findFriendChatInfosByOwnerId(ownerId);
+    }
+
+    public Optional<FriendChatInfo> findByOwnerIdAndUserId(String ownerId, String userId) {
+        return repository.findFriendChatInfoByOwnerIdAndUserId(ownerId, userId);
+    }
+
+    public HashMap<String, FriendChatInfo> findAllByOwnerIdAndUserId(AbstractMap.SimpleEntry<String, String>... tokens) {
+        HashMap<String, FriendChatInfo> rt = new HashMap<>();
+        for (AbstractMap.SimpleEntry<String, String> token : tokens) {
+            Optional<FriendChatInfo> info = findByOwnerIdAndUserId(token.getKey(), token.getValue());
+            if (info.isPresent())
+                rt.put(token.getKey(), info.get());
+        }
+        return rt;
+    }
+
+    public HashMap<String, FriendChatInfo> findAllByOwnerIdAndUserId(List<AbstractMap.SimpleEntry<String, String>> tokens) {
+        HashMap<String, FriendChatInfo> rt = new HashMap<>();
+        for (AbstractMap.SimpleEntry<String, String> token : tokens) {
+            Optional<FriendChatInfo> info = findByOwnerIdAndUserId(token.getKey(), token.getValue());
+            if (info.isPresent())
+                rt.put(token.getKey(), info.get());
+        }
+        return rt;
     }
 
     public void deleteAll() {

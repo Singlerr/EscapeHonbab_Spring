@@ -1,5 +1,8 @@
 package io.github.escapehonbab.netty.chat;
 
+import io.github.escapehonbab.jpa.objects.MessageBundle;
+import io.github.escapehonbab.netty.MessageDecoder;
+import io.github.escapehonbab.netty.MessageEncoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -9,9 +12,6 @@ import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.serialization.ClassResolvers;
-import io.netty.handler.codec.serialization.ObjectDecoder;
-import io.netty.handler.codec.serialization.ObjectEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
@@ -21,21 +21,18 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
 
 @Service
 @Component
 public class ChattingServerBootstrap {
+    private final ChattingServerHandler handler;
+    private final ChattingPool pool;
+    private final DeadConnectionHandler connectionHandler;
     @Value("${chatting.server.port}")
     private int port;
-
     @Value("${server.host}")
     private String host;
-
-    private final ChattingServerHandler handler;
-
-    private final ChattingPool pool;
-
-    private final DeadConnectionHandler connectionHandler;
 
     public ChattingServerBootstrap(ChattingServerHandler handler, ChattingPool pool, DeadConnectionHandler deadConnectionHandler) {
         this.handler = handler;
@@ -47,8 +44,6 @@ public class ChattingServerBootstrap {
     public void startServer() {
         Thread t = new Thread(() -> {
             ChannelGroup group = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-            //ChattingPool pool = ChattingPool.getInstance(group);
-            //ChattingServerHandler handler = new ChattingServerHandler(pool);
             EventLoopGroup parentGroup = new NioEventLoopGroup(3);
             EventLoopGroup childGroup = new NioEventLoopGroup();
             try {
@@ -60,10 +55,8 @@ public class ChattingServerBootstrap {
                             @Override
                             protected void initChannel(SocketChannel socketChannel) throws Exception {
                                 socketChannel.pipeline().addLast("idleStateHandler", new IdleStateHandler(60, 30, 0));
-                                socketChannel.pipeline().addLast("deadConnectionHandler", connectionHandler);
-                                socketChannel.pipeline().addLast(new ObjectDecoder(1024 * 1024,
-                                                ClassResolvers.weakCachingConcurrentResolver(getClass().getClassLoader())),
-                                        new ObjectEncoder());
+                                socketChannel.pipeline().addLast(MessageDecoder.builder().registeredClasses(Arrays.asList(MessageBundle.class)).build(),
+                                        new MessageEncoder());
                                 socketChannel.pipeline().addLast(handler);
                                 group.add(socketChannel);
                             }

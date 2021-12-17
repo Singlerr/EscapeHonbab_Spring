@@ -1,12 +1,11 @@
 package io.github.escapehonbab.netty.chat;
 
+import io.github.escapehonbab.netty.PingMessage;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import org.springframework.stereotype.Component;
-
-import java.io.Serializable;
 
 @Component
 public class DeadConnectionHandler extends ChannelDuplexHandler {
@@ -30,8 +29,4 @@ public class DeadConnectionHandler extends ChannelDuplexHandler {
         }
     }
 
-    public static class PingMessage implements Serializable {
-        public PingMessage() {
-        }
-    }
 }

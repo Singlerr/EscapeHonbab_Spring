@@ -6,6 +6,7 @@ import io.github.escapehonbab.spring.jwt.AuthenticationToken;
 import io.github.escapehonbab.spring.jwt.JWTAuthenticationTokenProvider;
 import io.github.escapehonbab.spring.objects.RequestBundle;
 import io.github.escapehonbab.spring.objects.ResponseBundle;
+import io.github.escapehonbab.spring.service.TemporaryImageService;
 import io.github.escapehonbab.spring.service.UserService;
 import lombok.Builder;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.security.sasl.AuthenticationException;
 import java.io.IOException;
 
 
@@ -29,6 +31,7 @@ public class UserController {
     private final JWTAuthenticationTokenProvider authenticationTokenProvider;
     private UserService service;
     private PasswordEncoder encoder;
+    private TemporaryImageService imageService;
 
     @PostMapping(value = "/register")
     public ResponseBundle registerUser(@RequestBody RequestBundle req) throws IOException {
