@@ -10,7 +10,10 @@ import lombok.Builder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.AbstractMap;
@@ -30,20 +33,20 @@ public class FriendChatInfoController {
 
 
     @Async
-    @RequestMapping(value = "/info", method= {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/info", method = {RequestMethod.GET, RequestMethod.POST})
     public HashMap<String, FriendChatInfo> getFriendChatInfoByOwnerIdAndUserId(@RequestBody RequestBundle bundle) throws IOException {
         String[] tokens = bundle.getMessage(String[].class);
         return service.findAllByOwnerIdAndUserId(Arrays.stream(tokens).map(t -> new AbstractMap.SimpleEntry<String, String>(t.split(",")[0], t.split(",")[1])).collect(Collectors.toList()));
     }
 
     @Async
-    @RequestMapping(value = "/friend", method= {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/friend", method = {RequestMethod.GET, RequestMethod.POST})
     public FriendChatInfoList getFriendChatInfoList(@RequestBody RequestBundle bundle) throws IOException {
         return new FriendChatInfoList(service.findAllByOwnerId(bundle.getMessage(User.class).getUserId()));
     }
 
     @Async
-    @RequestMapping(value = "/matched", method= {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/matched", method = {RequestMethod.GET, RequestMethod.POST})
     public FriendChatInfoList getMatchedChatInfoList(@RequestBody RequestBundle bundle) throws IOException {
         User user = bundle.getMessage(User.class);
         User db = userService.findByUserId(user.getUserId()).orElseThrow(() -> new UsernameNotFoundException("No user found for " + user.getUserId()));

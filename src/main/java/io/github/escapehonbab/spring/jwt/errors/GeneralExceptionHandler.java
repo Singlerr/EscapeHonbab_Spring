@@ -24,10 +24,12 @@ public class GeneralExceptionHandler {
 
         return ResponseBundle.builder().response(HttpStatus.UNAUTHORIZED.getReasonPhrase()).responseCode(HttpStatus.UNAUTHORIZED.value()).build();
     }
+
     @ExceptionHandler(value = AuthenticationException.class)
     public ResponseBundle handleAuthenticationException() {
         return ResponseBundle.builder().response(HttpStatus.UNAUTHORIZED.getReasonPhrase()).responseCode(HttpStatus.UNAUTHORIZED.value()).build();
     }
+
     @ExceptionHandler(value = InvalidTypeIdException.class)
     public ResponseBundle handleJacksonException() {
         return ResponseBundle.builder().response("An error occurred").responseCode(HttpStatus.INTERNAL_SERVER_ERROR.value()).build();

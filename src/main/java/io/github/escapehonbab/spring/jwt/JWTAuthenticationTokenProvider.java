@@ -7,7 +7,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -66,6 +65,7 @@ public class JWTAuthenticationTokenProvider implements AuthenticationTokenProvid
         }
         return false;
     }
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -78,6 +78,7 @@ public class JWTAuthenticationTokenProvider implements AuthenticationTokenProvid
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
+
     private Claims extractAllClaims(String token) {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }

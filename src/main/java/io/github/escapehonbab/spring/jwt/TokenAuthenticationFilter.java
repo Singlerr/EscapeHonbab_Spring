@@ -2,15 +2,11 @@ package io.github.escapehonbab.spring.jwt;
 
 import io.github.escapehonbab.spring.jwt.errors.UnauthorizedException;
 import io.github.escapehonbab.spring.service.UserService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -43,7 +39,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             Long userNo = authenticationTokenProvider.getTokenOwnerNo(token);
             UserDetails userDetails = service.loadUserByUsername(String.valueOf(userNo));
             try {
-                JWTAuthentication authentication = new JWTAuthentication(service,userDetails.getUsername(),userDetails.getPassword());
+                JWTAuthentication authentication = new JWTAuthentication(service, userDetails.getUsername(), userDetails.getPassword());
                 authentication.setAuthenticated(true);
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
                 SecurityContextHolder.getContext().setAuthentication(authentication);

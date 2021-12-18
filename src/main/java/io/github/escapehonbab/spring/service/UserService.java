@@ -81,7 +81,7 @@ public class UserService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUserId(), user.getPassword(), authorities);
     }
 
-    public User authenticateByUserIdAndPassword(String userId, String password) throws BadCredentialsException{
+    public User authenticateByUserIdAndPassword(String userId, String password) throws BadCredentialsException {
         User user = repository.findUserByUserId(userId).orElseThrow(() -> new UsernameNotFoundException(userId));
 
         if (!encoder.matches(password, user.getPassword())) {

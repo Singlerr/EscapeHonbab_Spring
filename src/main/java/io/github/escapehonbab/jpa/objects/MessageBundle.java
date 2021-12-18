@@ -1,9 +1,12 @@
 package io.github.escapehonbab.jpa.objects;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+
+@AllArgsConstructor
 @JsonTypeInfo(include = JsonTypeInfo.As.EXTERNAL_PROPERTY, use = JsonTypeInfo.Id.NAME)
 @Getter
 public class MessageBundle {
@@ -14,16 +17,12 @@ public class MessageBundle {
     private String targetUserId;
     private String ownerId;
 
-    public MessageBundle(String message, String targetUserId, String ownerId) {
-        this.message = message;
-        this.targetUserId = targetUserId;
-        this.ownerId = ownerId;
-    }
+    private String time;
 
     public MessageBundle() {
     }
 
-    public static MessageBundle createMessage(String message, String targetUserId, String ownerId) {
-        return new MessageBundle(message, targetUserId, ownerId);
+    public static MessageBundle createMessage(String message, String targetUserId, String ownerId, String time, String state) {
+        return new MessageBundle(message, state, targetUserId, ownerId, time);
     }
 }

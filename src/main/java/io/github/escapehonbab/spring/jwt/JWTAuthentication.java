@@ -1,14 +1,10 @@
 package io.github.escapehonbab.spring.jwt;
 
 import io.github.escapehonbab.jpa.Role;
-import io.github.escapehonbab.jpa.objects.User;
 import io.github.escapehonbab.spring.service.UserService;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -17,23 +13,19 @@ import java.util.Set;
 
 public class JWTAuthentication implements Authentication {
 
-    private UserService userService;
-
-    private String userId;
-    private String password;
-
-    private boolean authenticated = false;
-
-
-    private Object details;
-
-    private static Set<GrantedAuthority> authorities = new HashSet<>();
+    private static final Set<GrantedAuthority> authorities = new HashSet<>();
 
     static {
         authorities.add(new SimpleGrantedAuthority(Role.USER.getValue()));
     }
 
-    public JWTAuthentication(UserService service, String userId, String password){
+    private final UserService userService;
+    private final String userId;
+    private final String password;
+    private boolean authenticated = false;
+    private Object details;
+
+    public JWTAuthentication(UserService service, String userId, String password) {
         this.userService = service;
         this.userId = userId;
         this.password = password;
@@ -54,7 +46,7 @@ public class JWTAuthentication implements Authentication {
         return this.details;
     }
 
-    public void setDetails(Object details){
+    public void setDetails(Object details) {
         this.details = details;
     }
 

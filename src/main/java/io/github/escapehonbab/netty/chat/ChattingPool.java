@@ -12,7 +12,6 @@ import java.util.HashMap;
 @Component
 public class ChattingPool {
 
-    private static ChattingPool instance;
     private final ChannelGroup userInConnection;
 
     private final HashMap<String, ChannelId> connected;
@@ -27,7 +26,12 @@ public class ChattingPool {
     }
 
     public boolean isInConnection(String userId) {
-        return connected.containsKey(userId) && userInConnection.contains(connected.get(userId));
+        return connected.containsKey(userId) && userInConnection.find(connected.get(userId)) != null;
+    }
+
+    public void registerConnection(String ownerId, Channel channel) {
+        userInConnection.add(channel);
+        connected.put(ownerId, channel.id());
     }
 
     public Channel getConnection(String userId) {
